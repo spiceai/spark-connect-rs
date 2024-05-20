@@ -87,7 +87,7 @@ impl Display for SparkError {
             SparkError::NotYetImplemented(source) => write!(f, "Not yet implemented: {source}"),
             SparkError::InvalidConnectionUrl(val) => write!(f, "Invalid URL error: {val}"),
             SparkError::TonicTransportError(source) => {
-                write!(f, "Tonic Transport Error: {source}")
+                write!(f, "Tonic Transport error: {source}")
             }
         }
     }
