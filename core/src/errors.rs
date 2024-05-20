@@ -7,7 +7,7 @@ use std::error::Error;
 
 use arrow::error::ArrowError;
 
-use tonic::transport::Error;
+use tonic::transport::Error as TonicTransportError;
 
 /// Different `Spark` types
 #[derive(Debug)]
@@ -19,7 +19,7 @@ pub enum SparkError {
     IoError(String, std::io::Error),
     ArrowError(ArrowError),
     InvalidConnectionUrl(String),
-    FailedToCreateGrpcChannel(tonic::transport::Error),
+    FailedToCreateGrpcChannel(TonicTransportError),
 }
 
 impl SparkError {
