@@ -7,6 +7,8 @@ use std::error::Error;
 
 use arrow::error::ArrowError;
 
+use tonic::transport::Error;
+
 /// Different `Spark` types
 #[derive(Debug)]
 pub enum SparkError {
@@ -17,6 +19,7 @@ pub enum SparkError {
     IoError(String, std::io::Error),
     ArrowError(ArrowError),
     InvalidConnectionUrl(String),
+    FailedToCreateGrpcChannel(tonic::transport::Error),
 }
 
 impl SparkError {
@@ -77,6 +80,9 @@ impl Display for SparkError {
             SparkError::ArrowError(desc) => write!(f, "Apache Arrow error: {desc}"),
             SparkError::NotYetImplemented(source) => write!(f, "Not yet implemented: {source}"),
             SparkError::InvalidConnectionUrl(val) => write!(f, "Invalid URL error: {val}"),
+            SparkError::FailedToCreateGrpcChannel(source) => {
+                write!(f, "Failed to create channel: {source}")
+            }
         }
     }
 }
