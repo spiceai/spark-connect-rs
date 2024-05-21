@@ -2,13 +2,13 @@
 // and then adding transformations for 'select' & 'sort'
 // printing the results as "show(...)"
 
-use spark_connect_rs::{SparkSession, SparkSessionBuilder};
-
 use spark_connect_rs::functions as F;
+use spark_connect_rs::{SparkSession, SparkSessionBuilder};
+use std::sync::Arc;
 
 #[tokio::main]
 async fn main() -> Result<(), Box<dyn std::error::Error>> {
-    let spark: SparkSession = SparkSessionBuilder::default().build().await?;
+    let spark: Arc<SparkSession> = Arc::new(SparkSessionBuilder::default().build().await?);
 
     let path = ["/opt/spark/examples/src/main/resources/people.csv"];
 
@@ -19,16 +19,14 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
         .option("delimiter", ";")
         .load(path)?;
 
-    // select columns and perform data manipulations
-    let df = df
-        .select([
-            F::col("name"),
-            F::col("age").cast("int").alias("age_int"),
-            (F::lit(3.0) + F::col("age").cast("int")).alias("addition"),
-        ])
-        .sort([F::col("name").desc()]);
-
-    df.show(Some(5), None, None).await?;
+    df.select([
+        F::col("name"),
+        F::col("age").cast("int").alias("age_int"),
+        (F::lit(3.0) + F::col("age").cast("int")).alias("addition"),
+    ])
+    .sort(vec![F::col("name").desc()])
+    .show(Some(5), None, None)
+    .await?;
 
     // print results
     // +--------------------------+
