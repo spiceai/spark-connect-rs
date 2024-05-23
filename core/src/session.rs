@@ -53,7 +53,7 @@ impl SparkSessionBuilder {
     /// Validate a connect string for a remote Spark Session
     ///
     /// String must conform to the [Spark Documentation](https://github.com/apache/spark/blob/master/connector/connect/docs/client-connection-string.md)
-    pub fn remote(connection: &str) -> Self {
+    pub fn remote(connection: &str) -> Result<Self, SparkError> {
         Self::new(connection)
     }
 
