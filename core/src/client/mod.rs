@@ -198,7 +198,7 @@ impl ChannelBuilder {
             .unwrap_or_else(|| ChannelBuilder::create_user_agent(None));
 
         if let Some(token) = headers.remove("token") {
-            channel_builder.token = Some(format!("Bearer {token}"));
+            channel_builder.token = Some(token);
         }
 
         if let Some(session_id) = headers.remove("session_id") {
@@ -259,7 +259,7 @@ impl Interceptor for MetadataInterceptor {
         if let Some(token) = token.get_value() {
             req.metadata_mut().insert(
                 "authorization",
-                AsciiMetadataValue::from_str(token).unwrap(),
+                AsciiMetadataValue::from_str(format!("Bearer {token}").as_str()).unwrap(),
             );
         }
 
