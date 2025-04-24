@@ -93,6 +93,7 @@ impl SparkSessionBuilder {
 
         let channel = endpoint.connect().await?;
 
+        // channel builder returns token with `Bearer` prefix
         let token = Arc::new(RwLock::new(Token::new(
             self.channel_builder.token().clone(),
         )));
@@ -390,7 +391,7 @@ impl SparkSession {
 
     pub fn set_token(&self, token: Option<&str>) {
         let mut guard = self.token.write();
-        guard.set_value(token);
+        guard.set_value(token.map(|t| format!("Bearer {}", t)).as_deref());
     }
 }
 
