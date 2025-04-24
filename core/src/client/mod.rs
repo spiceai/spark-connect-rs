@@ -238,7 +238,7 @@ impl Token {
     }
 
     pub fn set_value(&mut self, token: Option<&str>) {
-        self.value = token.map(|s| s.to_string());
+        self.value = token.map(|s| format!("Bearer {}", s.to_string()));
     }
 }
 
