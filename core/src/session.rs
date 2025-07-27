@@ -102,6 +102,8 @@ impl SparkSessionBuilder {
             MetadataInterceptor::new(token.clone(), self.channel_builder.headers().clone()),
         );
 
+        let service_client = service_client.max_decoding_message_size(128 * 1024 * 1024);
+
         let client = Arc::new(RwLock::new(service_client));
 
         let spark_connnect_client =
