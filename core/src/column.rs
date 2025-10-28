@@ -21,7 +21,7 @@ use crate::window::WindowSpec;
 /// ```rust
 /// use spark_connect_rs::{SparkSession, SparkSessionBuilder};
 ///
-/// let spark: SparkSession = SparkSessionBuilder::remote("sc://127.0.0.1:15002/;user_id=example_rs".to_string())
+/// let spark: SparkSession = SparkSessionBuilder::remote("sc://127.0.0.1:15002/;user_id=example_rs".to_string()).expect("should not fail")
 ///         .build()
 ///         .await?;
 ///

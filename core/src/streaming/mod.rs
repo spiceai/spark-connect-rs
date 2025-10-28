@@ -485,6 +485,7 @@ mod tests {
 
         Arc::new(
             SparkSessionBuilder::remote(connection)
+                .expect("should not fail")
                 .build()
                 .await
                 .unwrap(),

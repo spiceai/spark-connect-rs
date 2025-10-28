@@ -454,6 +454,7 @@ mod tests {
         let connection = "sc://127.0.0.1:15002/;user_id=rust_write;session_id=32c39012-896c-42fa-b487-969ee50e253b";
 
         SparkSessionBuilder::remote(connection)
+            .expect("should not fail")
             .build()
             .await
             .unwrap()

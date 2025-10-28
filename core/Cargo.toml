@@ -12,9 +12,9 @@ documentation.workspace = true
 repository.workspace = true
 rust-version.workspace = true
 include = [
-    "build.rs",
-    "src/**/*",
-    "spark/connector/connect/common/src/main/protobuf/spark/**/*",
+  "build.rs",
+  "src/**/*",
+  "spark/connector/connect/common/src/main/protobuf/spark/**/*",
 ]
 
 [dependencies]
@@ -35,7 +35,7 @@ prost-types = { workspace = true }
 
 rand = { workspace = true }
 uuid = { workspace = true }
-url =  { workspace = true }
+url = { workspace = true }
 
 chrono = { workspace = true }
 
@@ -53,30 +53,12 @@ tonic-build = "0.11.0"
 doctest = false
 
 [features]
-default = [
-  "tokio",
-  "tonic/codegen",
-  "tonic/prost",
-  "tonic/transport",
-]
+default = ["tokio", "tonic/codegen", "tonic/prost", "tonic/transport", "tls"]
 
-tls = [
-  "tonic/tls",
-  "tonic/tls-roots"
-]
+tls = ["tonic/tls", "tonic/tls-roots"]
 
-wasm = [
- "tonic-web-wasm-client",
- "tonic/codegen",
- "tonic/prost",
- "getrandom/js",
-]
+wasm = ["tonic-web-wasm-client", "tonic/codegen", "tonic/prost", "getrandom/js"]
 
-datafusion = [
-  "dep:datafusion"
-]
+datafusion = ["dep:datafusion"]
 
-polars = [
-  "dep:polars",
-  "dep:polars-arrow"
-]
+polars = ["dep:polars", "dep:polars-arrow"]
