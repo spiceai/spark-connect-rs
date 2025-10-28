@@ -402,7 +402,7 @@ mod tests {
     fn test_session_builder() {
         let connection = "sc://myhost.com:443/;token=ABCDEFG;user_agent=some_agent;user_id=user123";
 
-        let ssbuilder = SparkSessionBuilder::remote(connection);
+        let ssbuilder = SparkSessionBuilder::remote(connection).expect("should not fail");
 
         assert_eq!(
             "http://myhost.com:443".to_string(),
@@ -419,7 +419,10 @@ mod tests {
         let connection =
             "sc://localhost:15002/;token=ABCDEFG;user_agent=some_agent;user_id=user123";
 
-        let spark = SparkSessionBuilder::remote(connection).build().await;
+        let spark = SparkSessionBuilder::remote(connection)
+            .expect("should not fail")
+            .build()
+            .await;
 
         assert!(spark.is_ok());
     }
