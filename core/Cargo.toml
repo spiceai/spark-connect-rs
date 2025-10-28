@@ -47,7 +47,7 @@ polars = { workspace = true, optional = true }
 polars-arrow = { workspace = true, optional = true }
 
 [build-dependencies]
-tonic-build = "0.11.0"
+tonic-build = "0.13.0"
 
 [lib]
 doctest = false
@@ -55,7 +55,7 @@ doctest = false
 [features]
 default = ["tokio", "tonic/codegen", "tonic/prost", "tonic/transport", "tls"]
 
-tls = ["tonic/tls", "tonic/tls-roots"]
+tls = ["tonic/tls-ring", "tonic/tls-native-roots"]
 
 wasm = ["tonic-web-wasm-client", "tonic/codegen", "tonic/prost", "getrandom/js"]
 

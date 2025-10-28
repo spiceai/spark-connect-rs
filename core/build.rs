@@ -20,7 +20,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
         .build_server(false)
         .build_client(true)
         .build_transport(transport)
-        .compile(
+        .compile_protos(
             file_paths.as_ref(),
             &["./spark/connector/connect/common/src/main/protobuf"],
         )?;

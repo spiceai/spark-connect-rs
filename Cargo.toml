@@ -15,7 +15,7 @@ repository = "https://github.com/sjrusso8/spark-connect-rs"
 rust-version = "1.76"
 
 [workspace.dependencies]
-tonic = { version = "0.12", default-features = false }
+tonic = { version = "0.13", default-features = false }
 tonic-web-wasm-client = { version = "0.5" }
 
 tokio = { version = "1.44", default-features = false, features = [
