@@ -19,6 +19,7 @@ include = [
 
 [dependencies]
 tonic = { workspace = true, default-features = false, optional = true }
+tonic-prost = { version = "0.14", optional = true }
 tonic-web-wasm-client = { workspace = true, optional = true }
 
 tokio = { workspace = true, optional = true }
@@ -47,17 +48,18 @@ polars = { workspace = true, optional = true }
 polars-arrow = { workspace = true, optional = true }
 
 [build-dependencies]
-tonic-build = "0.13.0"
+tonic-build = "0.14"
+tonic-prost-build = "0.14"
 
 [lib]
 doctest = false
 
 [features]
-default = ["tokio", "tonic/codegen", "tonic/prost", "tonic/transport", "tls"]
+default = ["tokio", "tonic/codegen", "dep:tonic-prost", "tonic/transport", "tls"]
 
 tls = ["tonic/tls-ring", "tonic/tls-native-roots"]
 
-wasm = ["tonic-web-wasm-client", "tonic/codegen", "tonic/prost", "getrandom/js"]
+wasm = ["tonic-web-wasm-client", "tonic/codegen", "dep:tonic-prost", "getrandom/js"]
 
 datafusion = ["dep:datafusion"]
 

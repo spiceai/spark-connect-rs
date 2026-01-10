@@ -15,14 +15,14 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     #[cfg(not(feature = "wasm"))]
     let transport = true;
 
-    tonic_build::configure()
+    tonic_prost_build::configure()
         .protoc_arg("--experimental_allow_proto3_optional")
         .build_server(false)
         .build_client(true)
         .build_transport(transport)
         .compile_protos(
-            file_paths.as_ref(),
-            &["./spark/connector/connect/common/src/main/protobuf"],
+            &file_paths,
+            &["./spark/connector/connect/common/src/main/protobuf".to_string()],
         )?;
 
     Ok(())
