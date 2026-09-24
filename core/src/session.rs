@@ -205,6 +205,7 @@ impl SparkSession {
         DataFrame::new(self, LogicalPlanBuilder::from(range_relation))
     }
 
+    #[allow(non_snake_case)]
     pub fn setCatalog(self: Arc<Self>, catalog: &str) -> DataFrame {
         let catalog_relation = spark::relation::RelType::Catalog(spark::Catalog {
             cat_type: Some(spark::catalog::CatType::SetCurrentCatalog(
@@ -219,6 +220,7 @@ impl SparkSession {
         DataFrame::new(self, logical_plan)
     }
 
+    #[allow(non_snake_case)]
     pub fn setDatabase(self: Arc<Self>, database: &str) -> DataFrame {
         let catalog_relation = spark::relation::RelType::Catalog(spark::Catalog {
             cat_type: Some(spark::catalog::CatType::SetCurrentDatabase(
