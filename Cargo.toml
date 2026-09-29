@@ -23,8 +23,8 @@ tokio = { version = "1.44", default-features = false, features = [
     "rt-multi-thread",
 ] }
 
-arrow = { version = "58", features = ["prettyprint"] }
-arrow-ipc = { version = "58" }
+arrow = { version = "59", features = ["prettyprint"] }
+arrow-ipc = { version = "59" }
 
 serde_json = { version = "1" }
 
