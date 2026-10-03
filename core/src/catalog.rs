@@ -419,16 +419,18 @@ mod tests {
     use crate::errors::SparkError;
     use crate::SparkSessionBuilder;
 
-    async fn setup() -> SparkSession {
+    async fn setup() -> Arc<SparkSession> {
         println!("SparkSession Setup");
 
         let connection = "sc://127.0.0.1:15002/;user_id=rust_catalog";
 
-        SparkSessionBuilder::remote(connection)
-            .expect("should not fail")
-            .build()
-            .await
-            .unwrap()
+        Arc::new(
+            SparkSessionBuilder::remote(connection)
+                .expect("should not fail")
+                .build()
+                .await
+                .unwrap(),
+        )
     }
 
     #[tokio::test]

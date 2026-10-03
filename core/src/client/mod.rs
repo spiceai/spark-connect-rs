@@ -835,6 +835,7 @@ mod tests {
     }
 
     #[test]
+    #[cfg(not(feature = "tls"))]
     #[should_panic(
         expected = "The 'use_ssl' option requires the 'tls' feature, but it's not enabled!"
     )]
@@ -842,5 +843,16 @@ mod tests {
         let connection = "sc://127.0.0.1:443/;use_ssl=true";
 
         ChannelBuilder::create(&connection).unwrap();
+    }
+
+    #[test]
+    #[cfg(feature = "tls")]
+    fn test_ssl() {
+        let connection = "sc://127.0.0.1:443/;use_ssl=true";
+
+        let cb = ChannelBuilder::create(connection).unwrap();
+
+        assert!(cb.use_ssl());
+        assert_eq!("https://127.0.0.1:443", cb.endpoint());
     }
 }

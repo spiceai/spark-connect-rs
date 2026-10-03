@@ -448,16 +448,18 @@ mod tests {
     use crate::types::{DataType, StructField, StructType};
     use crate::SparkSessionBuilder;
 
-    async fn setup() -> SparkSession {
+    async fn setup() -> Arc<SparkSession> {
         println!("SparkSession Setup");
 
         let connection = "sc://127.0.0.1:15002/;user_id=rust_write;session_id=32c39012-896c-42fa-b487-969ee50e253b";
 
-        SparkSessionBuilder::remote(connection)
-            .expect("should not fail")
-            .build()
-            .await
-            .unwrap()
+        Arc::new(
+            SparkSessionBuilder::remote(connection)
+                .expect("should not fail")
+                .build()
+                .await
+                .unwrap(),
+        )
     }
 
     #[tokio::test]
@@ -585,13 +587,17 @@ mod tests {
             .range(None, 1000, 1, Some(16))
             .selectExpr(vec!["id AS range_id"]);
 
-        let table = "employees";
+        // A name per run, so reruns against the same server don't collide and no
+        // other table on it is touched.
+        let table = format!("employees_{}", uuid::Uuid::new_v4().simple());
 
-        df.writeTo(table).using("csv").create().await?;
+        df.writeTo(&table).using("csv").create().await?;
 
-        let df = spark.clone().table(table)?;
+        let df = spark.clone().table(&table)?;
 
         let records = df.select(vec![col("range_id")]).collect().await?;
+
+        spark.clone().sql(&format!("DROP TABLE {table}")).await?;
 
         assert_eq!(records.num_rows(), 1000);
         Ok(())
