@@ -1157,17 +1157,19 @@ mod tests {
     use crate::functions::*;
     use crate::SparkSessionBuilder;
 
-    async fn setup() -> SparkSession {
+    async fn setup() -> Arc<SparkSession> {
         println!("SparkSession Setup");
 
         let connection =
             "sc://127.0.0.1:15002/;user_id=rust_df;session_id=b5714cb4-6bb4-4c02-90b1-b9b93c70b323";
 
-        SparkSessionBuilder::remote(connection)
-            .expect("should not fail")
-            .build()
-            .await
-            .unwrap()
+        Arc::new(
+            SparkSessionBuilder::remote(connection)
+                .expect("should not fail")
+                .build()
+                .await
+                .unwrap(),
+        )
     }
 
     fn mock_data() -> RecordBatch {

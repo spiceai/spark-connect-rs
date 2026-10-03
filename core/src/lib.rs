@@ -149,16 +149,18 @@ mod tests {
 
     use super::*;
 
-    async fn setup() -> SparkSession {
+    async fn setup() -> Arc<SparkSession> {
         println!("SparkSession Setup");
 
         let connection = "sc://127.0.0.1:15002/;user_id=rust_test;session_id=0d2af2a9-cc3c-4d4b-bf27-e2fefeaca233";
 
-        SparkSessionBuilder::remote(connection)
-            .expect("should not fail")
-            .build()
-            .await
-            .unwrap()
+        Arc::new(
+            SparkSessionBuilder::remote(connection)
+                .expect("should not fail")
+                .build()
+                .await
+                .unwrap(),
+        )
     }
 
     #[tokio::test]

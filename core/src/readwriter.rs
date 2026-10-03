@@ -448,16 +448,18 @@ mod tests {
     use crate::types::{DataType, StructField, StructType};
     use crate::SparkSessionBuilder;
 
-    async fn setup() -> SparkSession {
+    async fn setup() -> Arc<SparkSession> {
         println!("SparkSession Setup");
 
         let connection = "sc://127.0.0.1:15002/;user_id=rust_write;session_id=32c39012-896c-42fa-b487-969ee50e253b";
 
-        SparkSessionBuilder::remote(connection)
-            .expect("should not fail")
-            .build()
-            .await
-            .unwrap()
+        Arc::new(
+            SparkSessionBuilder::remote(connection)
+                .expect("should not fail")
+                .build()
+                .await
+                .unwrap(),
+        )
     }
 
     #[tokio::test]
@@ -586,6 +588,12 @@ mod tests {
             .selectExpr(vec!["id AS range_id"]);
 
         let table = "employees";
+
+        // Earlier runs against the same server leave the table behind.
+        spark
+            .clone()
+            .sql(&format!("DROP TABLE IF EXISTS {table}"))
+            .await?;
 
         df.writeTo(table).using("csv").create().await?;
 
