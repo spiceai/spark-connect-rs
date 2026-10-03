@@ -587,19 +587,17 @@ mod tests {
             .range(None, 1000, 1, Some(16))
             .selectExpr(vec!["id AS range_id"]);
 
-        let table = "employees";
+        // A name per run, so reruns against the same server don't collide and no
+        // other table on it is touched.
+        let table = format!("employees_{}", uuid::Uuid::new_v4().simple());
 
-        // Earlier runs against the same server leave the table behind.
-        spark
-            .clone()
-            .sql(&format!("DROP TABLE IF EXISTS {table}"))
-            .await?;
+        df.writeTo(&table).using("csv").create().await?;
 
-        df.writeTo(table).using("csv").create().await?;
-
-        let df = spark.clone().table(table)?;
+        let df = spark.clone().table(&table)?;
 
         let records = df.select(vec![col("range_id")]).collect().await?;
+
+        spark.clone().sql(&format!("DROP TABLE {table}")).await?;
 
         assert_eq!(records.num_rows(), 1000);
         Ok(())
